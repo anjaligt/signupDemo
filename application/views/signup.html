@@ -17,7 +17,9 @@
 
     <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js"></script>
     <script src ="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://rawgithub.com/cletourneau/angular-bootstrap-datepicker/master/dist/angular-bootstrap-datepicker.js" charset="utf-8"></script>
+    <script src="https://angular-file-upload.appspot.com/js/ng-file-upload.js"></script>
     <script src="http://localhost/codeigniter3-rest-api/assets/app/app.js"></script>
 
 </head>
@@ -117,12 +119,26 @@
           <button type="button" class="btn btn-primary" ng-click="next('stage3')">Next</button>
         </div>
         <div class="animate-switch" ng-switch-when="stage3">
+        <div class="form-group">
+          <input type="file" ngf-select ng-model="picFile" name="file"    
+             accept="image/*" ngf-max-size="2MB" required
+             ngf-model-invalid="errorFile">
+          <i ng-show="multiStepForm.file.$error.required">*required</i><br>
+          <i ng-show="multiStepForm.file.$error.maxSize">File too large 
+              {{errorFile.size / 1000000|number:1}}MB: max 2M</i>
+          <img ng-show="multiStepForm.file.$valid" ngf-thumbnail="picFile" class="thumb"> <button ng-click="picFile = null" ng-show="picFile">Remove</button>
+          <br>
+         </div>
+         <button type="button" class="btn btn-info" ng-click="back('stage2')">Back</button>
+          <button type="button" class="btn btn-warning" ng-click="submitForm()">Submit</button>
+        </div>
+        <div class="animate-switch" ng-switch-when="stage4">
           <h3>Summary</h3>
           <p>First name: {{formParams.firstName}}</p>
           <p>Last name: {{formParams.lastName}}</p>
           <p>Email: {{formParams.email}}</p>
           <p>Message Body: {{formParams.Address}}</p>
-          <button type="button" class="btn btn-info" ng-click="back('stage2')">Back</button>
+          <button type="button" class="btn btn-info" ng-click="back('stage3')">Back</button>
           <button type="button" class="btn btn-warning" ng-click="submitForm()">Submit</button>
         </div>
         <div class="animate-switch" ng-switch-when="success">
