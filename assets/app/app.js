@@ -17,22 +17,29 @@ app.controller('formCtrl', ['$scope','Upload', '$http', function($scope, Upload,
   $scope.date = "";
   console.log($scope.formParams);
   $scope.uploadPic = function(file) {
-    file.upload = Upload.upload({
-      url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
-      data: {file: file},
-    });
-
-    file.upload.then(function (response) {
-      $timeout(function () {
-        file.result = response.data;
+    console.log(file,'fileData');
+   $http({
+        method: 'POST',
+        url: 'http://localhost/codeigniter3-rest-api/index.php/api/users/uploadFile',
+        data: JSON.stringify(file)
+      }).then(function successCallback(response) {
+        if (response
+          && response.data
+          && response.data.status
+          && response.data.status === 'success') {
+          $scope.stage = "success";
+        } else {
+          if (response
+            && response.data
+            && response.data.status
+            && response.data.status === 'error') {
+            $scope.stage = "error";
+          }
+        }
+      }, function errorCallback(response) {
+        $scope.stage = "error";
+        console.log(response);
       });
-    }, function (response) {
-      if (response.status > 0)
-        $scope.errorMsg = response.status + ': ' + response.data;
-    }, function (evt) {
-      // Math.min is to fix IE which reports 200% sometimes
-      file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
-    });
     }
   // Navigation functions
   $scope.next = function (stage) {
@@ -135,11 +142,15 @@ app.directive('jqdatepicker', function () {
         restrict: 'A',
         require: 'ngModel',
          link: function (scope, element, attrs, ngModelCtrl) {
-            element.datepicker({
+            $(element).datepicker({
                 dateFormat: 'DD, d  MM, yy',
                 onSelect: function (date) {
                     scope.date = date;
                     scope.$apply();
+
+                    scope.$apply(function() {
+                        scope.formParams.date = date;  
+                    });
                 }
             });
         }

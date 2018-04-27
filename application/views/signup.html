@@ -6,9 +6,11 @@
     <!-- CSS -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/darkly/bootstrap.min.css">
     <link rel="stylesheet" href="http://localhost/codeigniter3-rest-api/assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css">
 
     <!-- JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     
     <!-- load angular, nganimate, and ui-router -->
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
@@ -17,7 +19,6 @@
 
     <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js"></script>
     <script src ="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://rawgithub.com/cletourneau/angular-bootstrap-datepicker/master/dist/angular-bootstrap-datepicker.js" charset="utf-8"></script>
     <script src="https://angular-file-upload.appspot.com/js/ng-file-upload.js"></script>
     <script src="http://localhost/codeigniter3-rest-api/assets/app/app.js"></script>
@@ -109,7 +110,7 @@
           </div>
           <div class="form-group">
             Date of Birth: <!-- <input id="datepicker" type="text" data-ng-datepicker data-ng-options="datepickerOptions" data-ng-model="date"> -->
-            <input type="text" name="date" ng-model="date" jqdatepicker />{{date}}
+            <input type="text" name="date" ng-model="formParams.date" jqdatepicker />{{formParams.date}}
           </div>
           <div class="form-group">
             <label for="ta-body">Address:</label>
@@ -122,11 +123,11 @@
         <div class="form-group">
           <input type="file" ngf-select ng-model="picFile" name="file"    
              accept="image/*" ngf-max-size="2MB" required
-             ngf-model-invalid="errorFile">
+             ngf-model-invalid="errorFile" ng-click='uploadPic()'>
           <i ng-show="multiStepForm.file.$error.required">*required</i><br>
           <i ng-show="multiStepForm.file.$error.maxSize">File too large 
               {{errorFile.size / 1000000|number:1}}MB: max 2M</i>
-          <img ng-show="multiStepForm.file.$valid" ngf-thumbnail="picFile" class="thumb"> <button ng-click="picFile = null" ng-show="picFile">Remove</button>
+          <img ng-show="multiStepForm.file.$valid" ngf-thumbnail="picFile" ng-click='uploadPic()' class="thumb"> <button ng-click="picFile = null" ng-show="picFile">Remove</button>
           <br>
          </div>
          <button type="button" class="btn btn-info" ng-click="back('stage2')">Back</button>
